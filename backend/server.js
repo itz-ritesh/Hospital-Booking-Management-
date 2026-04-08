@@ -8,7 +8,7 @@ import doctorRouter from "./routes/doctorRoute.js";
 import adminRouter from "./routes/adminRoute.js";
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080;
 
 // Middleware
 app.use(express.json());
@@ -28,10 +28,10 @@ const startServer = async () => {
     await connectDB();
     connectCloudinary();
     app.listen(port, '0.0.0.0', () => {
-      console.log(`✅ Server started on PORT:${port}`);
+      console.log(`Server started on PORT:${port}`);
     });
   } catch (error) {
-    console.error("❌ Failed to start server:", error.message);
+    console.error("Failed to start server:", error.message);
     process.exit(1);
   }
 };
