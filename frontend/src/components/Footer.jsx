@@ -7,7 +7,9 @@ const Footer = () => {
 
         <div>
           <img className='mb-5 w-40' src={assets.logo} alt="" />
-          <p className='w-full md:w-2/3 text-gray-600 leading-6'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+          <p className='w-full md:w-2/3 text-gray-600 leading-6'>Hospital Appointment Booking System is designed to simplify the way patients connect with healthcare providers. Our platform allows users to easily search for doctors, schedule appointments, and manage their medical needs without unnecessary delays or complications.
+
+With a focus on convenience, reliability, and user friendly design, we aim to make healthcare more accessible for everyone. Whether it is a routine checkup or ongoing treatment, our system ensures a smooth and efficient experience every time.</p>
         </div>
 
         <div>
@@ -23,8 +25,8 @@ const Footer = () => {
         <div>
           <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
           <ul className='flex flex-col gap-2 text-gray-600'>
-            <li>+1-212-456-7890</li>
-            <li>greatstackdev@gmail.com</li>
+            <li>+91 814-555-132</li>
+            <li>riteshdutt952@gmail.com</li>
           </ul>
         </div>
 
@@ -32,7 +34,7 @@ const Footer = () => {
 
       <div>
         <hr />
-        <p className='py-5 text-sm text-center'>Copyright 2024 @ HospitalAppointmentBookingSystem.com - All Right Reserved.</p>
+        <p className='py-5 text-sm text-center'>Copyright 2026 @ HospitalAppointmentBookingSystem.com - All Right Reserved.</p>
       </div>
 
     </div>

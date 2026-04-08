@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
 
 const connectDB = async () => {
-  // For development, use in-memory MongoDB if Atlas connection fails
-  const useLocalDB = process.env.USE_LOCAL_DB === "true" || !process.env.MONGODB_URI;
+  // Sirf local development ke liye in-memory DB
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const useLocalDB = process.env.USE_LOCAL_DB === "true";
 
-  if (useLocalDB) {
+  if (isDevelopment && useLocalDB) {
     console.log("Using local in-memory MongoDB for development...");
     try {
+      const { MongoMemoryServer } = await import("mongodb-memory-server");
       const mongoServer = await MongoMemoryServer.create();
       const mongoUri = mongoServer.getUri();
       await mongoose.connect(mongoUri);
@@ -19,10 +20,11 @@ const connectDB = async () => {
     }
   }
 
-  // Production/Atlas connection
+  // Production - Render pe Atlas use karega
   const uri = process.env.MONGODB_URI;
   if (!uri) {
-    console.error("Missing MongoDB URI. Set MONGODB_URI or USE_LOCAL_DB=true");
+    console.error("❌ Missing MONGODB_URI environment variable");
+    console.log("Please set MONGODB_URI in Render Dashboard → Environment Variables");
     process.exit(1);
   }
 
@@ -31,7 +33,6 @@ const connectDB = async () => {
     console.log("✅ MongoDB Atlas connected successfully");
   } catch (error) {
     console.error("❌ MongoDB Atlas Error:", error.message);
-    console.log("💡 Tip: Set USE_LOCAL_DB=true in .env for local development");
     process.exit(1);
   }
 };
