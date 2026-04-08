@@ -1,23 +1,42 @@
 import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
-  if (!uri) {
-    console.error("Missing MongoDB URI. Please set MONGO_URI in your .env file.");
-    process.exit(1);
+  // For development, use in-memory MongoDB if Atlas connection fails
+  const useLocalDB = process.env.USE_LOCAL_DB === "true" || !process.env.MONGODB_URI;
+
+  if (useLocalDB) {
+    console.log("Using local in-memory MongoDB for development...");
+    try {
+      const mongoServer = await MongoMemoryServer.create();
+      const mongoUri = mongoServer.getUri();
+      await mongoose.connect(mongoUri);
+      console.log("✅ Local MongoDB connected successfully");
+      return;
+    } catch (error) {
+      console.error("❌ Local MongoDB failed:", error.message);
+      process.exit(1);
+    }
   }
 
-  if (!/^mongodb(?:\+srv)?:\/\//.test(uri)) {
-    console.error("Invalid MongoDB URI format. The URI must start with mongodb:// or mongodb+srv://");
+  // Production/Atlas connection
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    console.error("Missing MongoDB URI. Set MONGODB_URI or USE_LOCAL_DB=true");
     process.exit(1);
   }
 
   try {
     await mongoose.connect(uri);
-    console.log("MongoDB connected successfully");
+    console.log("✅ MongoDB Atlas connected successfully");
   } catch (error) {
-    console.error("MongoDB Error:", error.message || error);
+    console.error("❌ MongoDB Atlas Error:", error.message);
+    console.log("💡 Tip: Set USE_LOCAL_DB=true in .env for local development");
     process.exit(1);
+  }
+};
+
+export default connectDB;
   }
 };
 
